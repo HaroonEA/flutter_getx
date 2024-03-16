@@ -17,10 +17,16 @@ class _ScreenOneState extends State<ScreenOne> {
       appBar: AppBar(
         title: Text('Screen one ' + widget.name),
       ),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
+      body:
+          // Container(// reads th height of our screen and adjusts container
+          //height accordingly
+          //   height: MediaQuery.of(context).size.height * 1,
+          // or Get.height * .5;
+          // )
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
             TextButton(
                 onPressed: () {
                   Get.back();
