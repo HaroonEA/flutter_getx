@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getxsample/example_controller.dart';
+import 'package:getxsample/fav_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,8 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //important, injecting dependency
-  ExampleController exampleController = Get.put(ExampleController());
+  FavController controller = Get.put(FavController());
 
   @override
   void initState() {
@@ -21,29 +20,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Getx tutorials'),
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Notifications'),
-              Obx(
-                () {
-                  return Switch(
-                      value: exampleController.notification.value,
-                      onChanged: (value) {
-                        exampleController.setNotification(value);
-                      });
-                },
-              )
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
-    );
+        appBar: AppBar(
+          title: const Text('Getx tutorials'),
+        ),
+        body: ListView.builder(
+            itemCount: controller.fruitList.length,
+            itemBuilder: (context, index) {
+              return Card(
+                  child: ListTile(
+                      onTap: () {
+                        if (controller.tempFruitList
+                            .contains(controller.fruitList[index].toString())) {
+                          controller.removeFromFav(
+                              controller.fruitList[index].toString());
+                        } else {
+                          controller
+                              .addToFav(controller.fruitList[index].toString());
+                        }
+                      },
+                      title: Text(controller.fruitList[index].toString()),
+                      trailing: Obx(
+                        () => Icon(
+                          Icons.favorite,
+                          color: controller.tempFruitList.contains(
+                                  controller.fruitList[index].toString())
+                              ? Colors.red
+                              : Colors.white,
+                        ),
+                      )));
+            }));
   }
 }
