@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getxsample/counter_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,81 +10,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //dependency injection
+  final CounterController controller = Get.put(CounterController());
+  //int counter = 0;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Getx tutorials'),
       ),
-      body: Column(
-        children: [
-          Card(
-            child: ListTile(
-                title: Text('Getx dialog alert'),
-                subtitle: Text('Click to get dialogue alert'),
-                onTap: () {
-                  Get.defaultDialog(
-                      title: 'Delete chat',
-                      titlePadding: EdgeInsets.only(top: 20),
-                      contentPadding: EdgeInsets.all(20),
-                      // middleText: 'Are you sure?',
-                      confirm: TextButton(
-                          onPressed: () {
-                            Get.back(); //used to go back
-                            //Navigator.pop(context);
-                          },
-                          child: Text('ok')),
-                      cancel:
-                          TextButton(onPressed: () {}, child: Text('Cancel')),
-                      content: const Column(
-                        children: [
-                          Text('cancel'),
-                          Text('cancel'),
-                          Text('cancel')
-                        ],
-                      ));
-                }),
-          ),
-          Card(
-            child: ListTile(
-                title: Text('Getx Bottom sheet'),
-                subtitle: Text('Click to get dialogue alert'),
-                onTap: () {
-                  Get.bottomSheet(Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: Icon(Icons.light_mode),
-                          title: Text('Light theme'),
-                          onTap: () {
-                            Get.changeTheme(ThemeData.light());
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.dark_mode),
-                          title: Text('Dark theme'),
-                          onTap: () {
-                            Get.changeTheme(ThemeData.dark());
-                          },
-                        ),
-                      ],
-                    ),
-                  ));
-                }),
-          ),
-        ],
-      ),
+      body: Center(child: Obx(() {
+        print('rebuild');
+        return Text(controller.counter.toString(),
+            style: TextStyle(fontSize: 60));
+      })),
       floatingActionButton: FloatingActionButton(onPressed: () {
+        controller.incrementCounter();
         //SnackBar
-        Get.snackbar('Haroon', 'Hello world',
-            icon: Icon(Icons.add),
-            onTap: (snap) {},
-            mainButton: TextButton(onPressed: () {}, child: Text('Click')),
-            backgroundColor: Colors.blue,
-            snackPosition: SnackPosition.BOTTOM);
+        // Get.snackbar(
+        //     icon: Icon(Icons.add),
+        //     onTap: (snap) {},
+        //     mainButton: TextButton(onPressed: () {}, child: Text('Click')),
+        //     backgroundColor: Colors.blue,
+        //     snackPosition: SnackPosition.BOTTOM);
       }),
     );
   }
