@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getxsample/counter_controller.dart';
+import 'package:getxsample/example_two.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,13 +10,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //dependency injection
-  final CounterController controller = Get.put(CounterController());
-  //int counter = 0;
+  ExampleTwoController exampleTwoController = Get.put(ExampleTwoController());
   @override
-  void initState() {
-    super.initState();
-  }
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +22,22 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Getx tutorials'),
       ),
-      body: Center(child: Obx(() {
-        print('rebuild');
-        return Text(controller.counter.toString(),
-            style: TextStyle(fontSize: 60));
-      })),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        controller.incrementCounter();
-        //SnackBar
-        // Get.snackbar(
-        //     icon: Icon(Icons.add),
-        //     onTap: (snap) {},
-        //     mainButton: TextButton(onPressed: () {}, child: Text('Click')),
-        //     backgroundColor: Colors.blue,
-        //     snackPosition: SnackPosition.BOTTOM);
-      }),
+      body: Column(
+        children: [
+          Obx(() => Container(
+                height: 200,
+                width: 200,
+                color:
+                    Colors.red.withOpacity(exampleTwoController.opacity.value),
+              )),
+          Obx(() => Slider(
+              value: exampleTwoController.opacity.value,
+              onChanged: (value) {
+                exampleTwoController.setOpacity(value);
+              }))
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: () {}),
     );
   }
 }
