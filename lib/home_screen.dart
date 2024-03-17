@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getxsample/example_two.dart';
+import 'package:getxsample/example_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,11 +10,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ExampleTwoController exampleTwoController = Get.put(ExampleTwoController());
+  //important, injecting dependency
+  ExampleController exampleController = Get.put(ExampleController());
+
   @override
-  // void initState() {
-  //   super.initState();
-  // }
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +26,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          Obx(() => Container(
-                height: 200,
-                width: 200,
-                color:
-                    Colors.red.withOpacity(exampleTwoController.opacity.value),
-              )),
-          Obx(() => Slider(
-              value: exampleTwoController.opacity.value,
-              onChanged: (value) {
-                exampleTwoController.setOpacity(value);
-              }))
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Notifications'),
+              Obx(
+                () {
+                  return Switch(
+                      value: exampleController.notification.value,
+                      onChanged: (value) {
+                        exampleController.setNotification(value);
+                      });
+                },
+              )
+            ],
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {}),
